@@ -1,0 +1,175 @@
+[index.html](https://github.com/user-attachments/files/29666758/index.html)
+<!DOCTYPE html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Inscrição - Grupo de Oração Agape</title>
+    <style>
+      :root {
+        --gold: #c89b3c;
+        --gold-deep: #8d671a;
+        --ink: #1f2937;
+        --bg: #f7efe0;
+        --card: #fffdf8;
+        --border: #e8d7a6;
+      }
+      * { box-sizing: border-box; }
+      body {
+        margin: 0;
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        background: linear-gradient(135deg, #f8f2e4 0%, #efe2bf 100%);
+        color: var(--ink);
+      }
+      .shell { max-width: 1100px; margin: 0 auto; padding: 24px; }
+      .hero, .form-card {
+        background: var(--card); border: 1px solid var(--border); border-radius: 24px; box-shadow: 0 18px 40px rgba(0,0,0,0.08);
+      }
+      .hero { display: grid; grid-template-columns: 1.2fr 0.8fr; gap: 24px; padding: 28px; margin-bottom: 20px; }
+      .eyebrow { text-transform: uppercase; letter-spacing: .28em; color: var(--gold-deep); font-weight: 700; margin-bottom: 10px; }
+      h1 { margin: 0 0 10px; font-size: clamp(1.8rem, 3vw, 2.8rem); }
+      .lead { color: #4b5563; line-height: 1.7; }
+      .pill-row { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 14px; }
+      .pill-row span { padding: 8px 12px; border-radius: 999px; background: #f9edd0; color: var(--gold-deep); font-size: .95rem; }
+      .image-box { display: flex; justify-content: center; align-items: center; }
+      .image-box img { width: 100%; max-width: 320px; border-radius: 20px; border: 2px solid var(--border); }
+      .form-card { padding: 28px; display: grid; grid-template-columns: 1.2fr 0.8fr; gap: 24px; }
+      form { display: grid; gap: 14px; }
+      label { display: grid; gap: 8px; font-weight: 600; }
+      input, select { width: 100%; padding: 12px 14px; border-radius: 12px; border: 1px solid var(--border); font: inherit; }
+      .payment-group { border: 1px solid var(--border); border-radius: 16px; padding: 12px; display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px; }
+      .payment-group legend { padding: 0 8px; font-weight: 700; }
+      .option-card { display: flex; align-items: center; gap: 8px; background: #fcf7eb; border: 1px solid #eddcb4; border-radius: 12px; padding: 10px 12px; }
+      button { border: 0; border-radius: 999px; padding: 12px 18px; background: linear-gradient(135deg, var(--gold) 0%, var(--gold-deep) 100%); color: white; font-weight: 700; cursor: pointer; }
+      .status-card { background: #f9f0da; border-radius: 18px; padding: 18px; display: flex; flex-direction: column; gap: 10px; }
+      .status-card a { color: var(--gold-deep); font-weight: 700; text-decoration: none; }
+      .hidden { display: none; }
+      @media (max-width: 900px) { .hero, .form-card { grid-template-columns: 1fr; } }
+      @media (max-width: 600px) { .payment-group { grid-template-columns: 1fr; } }
+    </style>
+  </head>
+  <body>
+    <main class="shell">
+      <section class="hero">
+        <div>
+          <p class="eyebrow">Grupo de Oração Agape</p>
+          <h1>Inscrição para o evento de oração e adoração</h1>
+          <p class="lead">Venha participar de um momento especial em honra ao Santíssimo Sacramento. Sua presença é uma graça para toda a comunidade.</p>
+          <div class="pill-row">
+            <span>Cadastro profissional</span>
+            <span>Pagamento por Pix, débito, crédito e maquininha</span>
+            <span>Planilha Excel e confirmação por e-mail</span>
+          </div>
+        </div>
+        <div class="image-box">
+          <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/6/6d/Monstrance_with_host.jpg/640px-Monstrance_with_host.jpg" alt="Ostensorio com o Santíssimo Sacramento" />
+        </div>
+      </section>
+
+      <section class="form-card">
+        <form id="inscricaoForm">
+          <label>Nome completo
+            <input type="text" id="fullName" required />
+          </label>
+          <label>Telefone
+            <input type="tel" id="phone" required />
+          </label>
+          <label>Data de nascimento
+            <input type="date" id="birthDate" required />
+          </label>
+          <label>E-mail
+            <input type="email" id="email" required />
+          </label>
+          <fieldset class="payment-group">
+            <legend>Forma de pagamento</legend>
+            <label class="option-card"><input type="radio" name="paymentMethod" value="pix" checked /> Pix</label>
+            <label class="option-card"><input type="radio" name="paymentMethod" value="debito" /> Débito</label>
+            <label class="option-card"><input type="radio" name="paymentMethod" value="credito" /> Crédito</label>
+            <label class="option-card"><input type="radio" name="paymentMethod" value="maquininha" /> Maquininha</label>
+          </fieldset>
+          <button type="submit">Enviar inscrição</button>
+        </form>
+
+        <aside class="status-card">
+          <h3>Status da inscrição</h3>
+          <p id="feedback">Preencha os dados e confirme sua participação.</p>
+          <a href="#" id="downloadBtn">Baixar planilha Excel</a>
+          <p id="summary" class="hidden"></p>
+        </aside>
+      </section>
+    </main>
+
+    <script>
+      const form = document.getElementById('inscricaoForm');
+      const feedback = document.getElementById('feedback');
+      const summary = document.getElementById('summary');
+      const downloadBtn = document.getElementById('downloadBtn');
+      const storageKey = 'agape_inscricoes';
+
+      function loadRegistrations() {
+        const raw = localStorage.getItem(storageKey);
+        return raw ? JSON.parse(raw) : [];
+      }
+
+      function saveRegistration(reg) {
+        const registrations = loadRegistrations();
+        registrations.push(reg);
+        localStorage.setItem(storageKey, JSON.stringify(registrations));
+        return registrations;
+      }
+
+      function buildExcelContent(records) {
+        const header = ['Nome Completo', 'Telefone', 'Nascimento', 'Email', 'Pagamento', 'Status', 'Data'];
+        const rows = records.map(r => [r.fullName, r.phone, r.birthDate, r.email, r.paymentMethod, r.paymentStatus, r.registeredAt]);
+        const csv = [header.join(','), ...rows.map(r => r.join(','))].join('\n');
+        return csv;
+      }
+
+      function downloadExcel() {
+        const records = loadRegistrations();
+        const content = buildExcelContent(records);
+        const blob = new Blob([content], { type: 'text/csv;charset=utf-8;' });
+        const url = URL.createObjectURL(blob);
+        const link = document.createElement('a');
+        link.href = url;
+        link.download = 'inscricoes-agape.csv';
+        link.click();
+        URL.revokeObjectURL(url);
+      }
+
+      form.addEventListener('submit', function (event) {
+        event.preventDefault();
+        const fullName = document.getElementById('fullName').value.trim();
+        const phone = document.getElementById('phone').value.trim();
+        const birthDate = document.getElementById('birthDate').value;
+        const email = document.getElementById('email').value.trim();
+        const paymentMethod = document.querySelector('input[name="paymentMethod"]:checked')?.value || 'pix';
+
+        if (!fullName || !phone || !birthDate || !email) {
+          feedback.textContent = 'Preencha todos os campos antes de continuar.';
+          return;
+        }
+
+        const registration = {
+          fullName,
+          phone,
+          birthDate,
+          email,
+          paymentMethod,
+          paymentStatus: 'Pendente',
+          registeredAt: new Date().toLocaleString('pt-BR')
+        };
+
+        saveRegistration(registration);
+        feedback.innerHTML = `<strong>Inscrição recebida!</strong><br>O status de pagamento ficará registrado e pode ser exportado.`;
+        summary.classList.remove('hidden');
+        summary.textContent = `Participante: ${fullName} | Pagamento: ${paymentMethod.toUpperCase()} | Status: ${registration.paymentStatus}`;
+      });
+
+      downloadBtn.addEventListener('click', function (event) {
+        event.preventDefault();
+        downloadExcel();
+      });
+    </script>
+  </body>
+</html>
